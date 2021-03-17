@@ -1,7 +1,9 @@
 const webpack = require("webpack");
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const SWPrecacheWebpackPlugin = require("sw-precache-webpack-plugin");
 const WebpackPwaManifest = require("webpack-pwa-manifest");
 const path = require("path");
+
 
 const config = {
   entry: {
@@ -18,32 +20,31 @@ const config = {
     rules: [
       {
         test: /\.(png|jpe?g|gif)$/i,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name(file) {
-                return '[path][name].[ext]';
-              },
-              publicPath: function(url) {
-                return url.replace('../', '/assets/');
-              }
-            }
-          },
-          {
-            loader: 'image-webpack-loader'
-          }
-        ]
-      }
-    ]
+        use: [{
+          loader: 'file-loader',
+          options: {
+            name (file) {
+              return '[path][name].[ext]'
+            },
+            publicPath: function(url) {
+                return url.replace('../', '/assets/')
+            },
+          }  
+        }, 
+        {
+          loader: 'image-webpack-loader',
+        },
+      ],
+      },
+    ],
   },
   plugins: [
     new webpack.ProvidePlugin({
-      $: 'jquery',
-      jQuery: 'jquery'
+        $: "jquery",
+        jQuery: "jquery"
     }),
     new BundleAnalyzerPlugin({
-      analyzerMode: 'static'
+      analyzerMode: "static"
     }),
     new WebpackPwaManifest({
       name: "Food Event",
@@ -60,8 +61,8 @@ const config = {
         destination: path.join("assets", "icons")
       }]
     })
-  ],
-  mode: 'development'
+],
+  mode: "development"
 };
 
 module.exports = config;
